@@ -1,9 +1,9 @@
+before_script: 
+  - "mysql -e 'create database myzoom_test'"
+env: 
+  - DB=mysql
 language: ruby
-rvm:
-	- "1.26.11"
-env:
-	- DB=mysql
-script:
-	- RAILS_ENV=test bundle exec rake --trace db:migrate test
-before_script:
-	- mysql -e 'create database myzoom_test'	
+rvm: 
+  - "1.26.11"
+script: 
+  - "RAILS_ENV=test bundle exec rake --trace db:migrate test"
