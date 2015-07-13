@@ -1,2 +1,4 @@
 {<img src="https://travis-ci.org/kevi793/myzoom.svg" alt="Build Status" />}[https://travis-ci.org/kevi793/myzoom]
 {<img src="https://codeclimate.com/repos/55a3c893e30ba003bb006c82/badges/fa644d8e9dca0f57be7c/gpa.svg" />}[https://codeclimate.com/repos/55a3c893e30ba003bb006c82/feed]
+{<img src="https://coveralls.io/repos/kevi793/myzoom/badge.svg?branch=master&service=github" alt="Coverage Status" />}[https://coveralls.io/github/kevi793/myzoom?branch=master]
+
