@@ -1,7 +1,7 @@
-before_script: 
+before_script:
   - "mysql -e 'create database myzoom_test'"
-env: 
+env:
   - DB=mysql
 language: ruby
-rvm: 
+rvm:
   - 2.2.1
