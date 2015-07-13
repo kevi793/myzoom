@@ -4,6 +4,6 @@ env:
   - DB=mysql
 language: ruby
 rvm: 
-  - "1.26.11"
+  - 2.2.1
 script: 
   - "RAILS_ENV=test bundle exec rake --trace db:migrate test"
