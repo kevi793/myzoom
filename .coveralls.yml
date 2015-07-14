@@ -1,1 +1,2 @@
-repo_token: bZxhtdyuGaNTgkeJeZbgAYTmSYMjWkOsC
+COVERALLS_REPO_TOKEN = bZxhtdyuGaNTgkeJeZbgAYTmSYMjWkOsC bundle exec rspec spec
+service_name: travis-ci
