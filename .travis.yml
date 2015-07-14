@@ -1,6 +1,6 @@
 before_script:
   - "mysql -e 'create database myzoom_test'"
-  - bundle exec rake
+  - bundle exec rake all
 env:
   - DB=mysql
 language: ruby
