@@ -41,20 +41,21 @@ group :development, :test do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   # gem 'spring'
-
-  gem 'rspec'
-
-  gem 'rspec-rails'
-
-  gem 'factory_girl_rails'
 end
 
 
-group :test do
+group :localenvironment do
+  gem 'guard'
+end
+
+
+group :localenvironment, :test do
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem 'faker'
   gem 'capybara'
   gem 'guard-rspec'
   gem 'launchy'
-  # gem 'coveralls', require: false
   gem "codeclimate-test-reporter", require: nil
 end
