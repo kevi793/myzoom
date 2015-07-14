@@ -38,7 +38,7 @@ test:
 # production deployment.
 #
 # On Heroku and other platform providers, you may have a full connection URL
-# available as an environment variable. For example:
+# available as an environment variable. For example
 #
 #   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
 #
