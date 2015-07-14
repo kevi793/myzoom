@@ -2,7 +2,7 @@ before_script:
   - "mysql -e 'create database myzoom_test'"
 env:
   - DB=mysql
-  #- CODECLIMATE_REPO_TOKEN=321e1df96aed3f5b70952b96d871946e15467ca97a19c551e111e2c13c10ec92 bundle exec rake
+  - CODECLIMATE_REPO_TOKEN=321e1df96aed3f5b70952b96d871946e15467ca97a19c551e111e2c13c10ec92 bundle exec rake
 language: ruby
 rvm:
   - 2.2.1
