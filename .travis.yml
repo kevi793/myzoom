@@ -2,6 +2,7 @@ before_script:
   - "mysql -e 'create database myzoom_test'"
 env:
   - DB=mysql
+  - COVERALLS_REPO_TOKEN = bZxhtdyuGaNTgkeJeZbgAYTmSYMjWkOsC bundle exec rspec spec
 language: ruby
 rvm:
   - 2.2.1

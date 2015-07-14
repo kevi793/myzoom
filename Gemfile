@@ -56,4 +56,5 @@ group :test do
   gem 'guard-rspec'
   gem 'launchy'
   gem 'coveralls', require: false
+  gem "codeclimate-test-reporter", group: :test, require: nil
 end
