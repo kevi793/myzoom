@@ -1,7 +1,11 @@
 before_script:
   - mysql -e 'create database myzoom_test;'
-before_install:
-  - mysql -e "create database IF NOT EXISTS myzoom_test;" -uroot -ptoor
+script:
+  - RAILS_ENV=test
+  - bundle exec rake db:create RAILS_ENV=test
+  - bundle exec rake db:migrate RAILS_ENV=test
+  - bundle exec rspec spec/
+cache: bundler
 env:
   - DB=mysql
 language: ruby
