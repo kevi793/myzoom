@@ -1,5 +1,5 @@
 before_script:
-  - mysql -e 'create database myzoom_test;'
+  - mysql -e 'create database myzoom_test;' -uroot -ptoor
 script:
   - RAILS_ENV=test
   - bundle exec rake db:create RAILS_ENV=test
