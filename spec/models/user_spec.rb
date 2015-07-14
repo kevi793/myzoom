@@ -5,5 +5,4 @@ RSpec.describe User, type: :model do
     user = FactoryGirl.create(:user)
     user.should be_valid
   end
-
 end
