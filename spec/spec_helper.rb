@@ -16,7 +16,7 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-ENV['CODECLIMATE_REPO_TOKEN'] = 321e1df96aed3f5b70952b96d871946e15467ca97a19c551e111e2c13c10ec92
+
 require "codeclimate-test-reporter"
 CodeClimate::TestReporter.start
 # require 'coveralls'
