@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20150715061510) do
     t.string  "description", limit: 100, null: false
   end
 
-  add_index "locations", ["city_id"], name: "index_locations_on_city_id", using: :btree
+  add_index "locations", ["city_id", "name"], name: "index_locations_on_city_id_and_name", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",       limit: 255
