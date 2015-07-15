@@ -61,3 +61,9 @@ group :localenvironment, :test do
   gem 'launchy'
   gem "codeclimate-test-reporter", require: nil
 end
+
+group :production do
+  gem 'rails_12factor'
+end
+
+ruby "2.2.1"
