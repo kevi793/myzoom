@@ -8,7 +8,7 @@ class Location < ActiveRecord::Base
   validates :longitude, presence: true
   validates_numericality_of :latitude, :longitude
   validates :map_link, url: true, presence: true
-  validates :description, length: {2..100}, presence: true
+  validates :description, length: {in: 2..100}, presence: true
   validates :location, uniqueness: {scope: [:latitude, :longitude]}
 
 end
