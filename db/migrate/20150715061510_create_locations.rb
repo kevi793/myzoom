@@ -9,11 +9,9 @@ class CreateLocations < ActiveRecord::Migration
       t.string :map_link, :null => false
       t.string :description, :null => false, :limit => 100
     end
-    add_index :locations, [:city_id]
   end
 
   def down
-    remove_index :locations, [:city_id]
     drop_table :locations
   end
 end
