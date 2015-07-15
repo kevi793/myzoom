@@ -13,7 +13,7 @@ class CreateLocations < ActiveRecord::Migration
   end
 
   def down
-    remove_index :;locations, [:city_id]
+    remove_index :locations, [:city_id]
     drop_table :locations
   end
 end
