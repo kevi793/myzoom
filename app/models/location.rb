@@ -4,28 +4,28 @@ class Location < ActiveRecord::Base
   validates :name,
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'},
             :format => {with: /\A[a-zA-Z]+\z/, message: "only allows letters"},
-            :presence => {:message => "name cannot be blank"}
+            :presence => {:message => " cannot be blank"}
 
   validates :address,
             :length => {in: 2..100, :message => 'Must be between 2 to 100 characters'},
-            :presence => {:message => "address cannot be blank"}
+            :presence => {:message => " cannot be blank"}
 
   validates :latitude,
-            :presence => {:message => 'latitiude cannot be blank'},
-            :numericality => {:message => 'latitude can be only float', only_float: true}
+            :presence => {:message => ' cannot be blank'},
+            :numericality => {:message => ' can be only float', only_float: true}
 
   validates :longitude,
-            :presence => {:message => 'longitude cannot be blank'},
-            :numericality => {:message => 'longitude can be only float', only_float: true}
+            :presence => {:message => ' cannot be blank'},
+            :numericality => {:message => ' can be only float', only_float: true}
 
   validates :map_link,
-            :url => {:message => 'url is not correct'},
-            :presence => {:message => 'map link cannot be blank'},
-            :uniqueness => {:message => 'map_link already exists'}
+            :url => {:message => ' is not correct'},
+            :presence => {:message => ' cannot be blank'},
+            :uniqueness => {:message => ' already exists'}
 
   validates :description,
-            :length => {in: 2..100, :message => 'description should  be between 2-100 characters'},
-            :presence => {:message => 'description cannot be blank'}
+            :length => {in: 2..100, :message => ' should  be between 2-100 characters'},
+            :presence => {:message => ' cannot be blank'}
 
   after_save :validate_model
 

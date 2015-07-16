@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
   def create
       @user = User.new(user_params)
+      @user.password = @user[:password_digest]
       if @user.save
         #Successful save
         flash[:success] = 'Welcome to MyZoom'

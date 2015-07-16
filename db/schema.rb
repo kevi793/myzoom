@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20150716081719) do
     t.string   "first_name",      limit: 25,  null: false
     t.string   "last_name",       limit: 25,  null: false
     t.string   "email",           limit: 100, null: false
-    t.string   "password_digest", limit: 40
+    t.string   "password_digest", limit: 60
   end
 
 end

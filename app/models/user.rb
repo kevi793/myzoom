@@ -1,17 +1,20 @@
 class User < ActiveRecord::Base
   validates :first_name,
-            :presence => {:message => "firstname cannit be blank"},
+            :presence => {:message => " cannot be blank"},
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'}
 
   validates :last_name,
-            :presence => {:message => "firstname cannit be blank"},
+            :presence => {:message => " cannot be blank"},
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'}
 
   validates :email,
-            :presence => {:message => "email cannit be blank"},
-            :length => {maximum: 100, :message => 'Must be less than 100 characters'},
+            :presence => {:message => " cannot be blank"},
+            :length => {:maximum => 100, :message => 'Must be less than 100 characters'},
             :email => true,
-            :uniqueness => {:message => "email already exists"}
+            :uniqueness => {:message => " already exists"}
+
+  validates :password_digest,
+            :length => {:minimum => 6, :message => "Must be atleast 6 characters"}
 
   has_secure_password
 
