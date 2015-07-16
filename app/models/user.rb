@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
   validates :email,
             :presence => {:message => "email cannit be blank"},
             :length => {maximum: 100, :message => 'Must be less than 100 characters'},
-            :email => true
+            :email => true,
+            :uniqueness => {:message => "email already exists"}
 
   has_secure_password
 
