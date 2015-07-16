@@ -7,8 +7,11 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <div class = "container">
+    <%= yield %>
+    <%= debug(params) if Rails.env.developemnt? %>
+  </div>
 
-<%= yield %>
 
 </body>
 </html>
