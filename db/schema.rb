@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715061510) do
+ActiveRecord::Schema.define(version: 20150716081719) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name", limit: 25, null: false
@@ -32,9 +32,12 @@ ActiveRecord::Schema.define(version: 20150715061510) do
   add_index "locations", ["city_id", "name"], name: "index_locations_on_city_id_and_name", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "first_name",      limit: 25,  null: false
+    t.string   "last_name",       limit: 25,  null: false
+    t.string   "email",           limit: 100, null: false
+    t.string   "hashed_password", limit: 40
   end
 
 end
