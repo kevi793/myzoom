@@ -4,10 +4,10 @@ class AddAttributesToUserModel < ActiveRecord::Migration
     add_column("users", :first_name, :string, :limit => 25, :null => false)
     add_column("users", :last_name, :string, :limit => 25, :null => false)
     add_column("users", :email, :string, :null => false, :limit => 100)
-    add_column("users", :hashed_password, :string, :limit => 40)
+    add_column("users", :password_digest, :string, :limit => 40)
   end
   def down
-    remove_column("users",:hashed_password)
+    remove_column("users",:password_digest)
     remove_column("users",:email)
     remove_column("users",:last_name)
     remove_column("users",:first_name)
