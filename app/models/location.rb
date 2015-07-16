@@ -4,11 +4,11 @@ class Location < ActiveRecord::Base
   validates :name,
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'},
             :format => {with: /\A[a-zA-Z]+\z/, message: "only allows letters"},
-            :presence => true
+            :presence => {:message => "name cannot be blank"}
 
   validates :address,
             :length => {in: 2..100, :message => 'Must be between 2 to 100 characters'},
-            :presence => true
+            :presence => {:message => "address cannot be blank"}
 
   validates :latitude,
             :presence => {:message => 'latitiude cannot be blank'},
