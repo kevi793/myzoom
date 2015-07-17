@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
+  get 'sessions/new'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   resources :users
+  resources :sessions, :only => [:new, :create, :destroy]
+  get '/signin', :to => 'sessions#new', as: 'signin'
+  get '/signout', :to => 'sessions#destroy', as: 'signout'
   match ':controller/(:action/(:id))', :via => [:get, :post]
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
