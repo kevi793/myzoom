@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :sessions, :only => [:new, :create, :destroy]
   get '/signin', :to => 'sessions#new', as: 'signin'
   get '/signout', :to => 'sessions#destroy', as: 'signout'
+  get '/signup', :to => 'users#new', as: 'signup'
   match ':controller/(:action/(:id))', :via => [:get, :post]
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
