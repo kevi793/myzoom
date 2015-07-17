@@ -18,25 +18,35 @@ RSpec.describe SessionsController, type: :controller do
 
   describe "POST #create" do
 
-    before(:each) do
-      @attr = {:email => "email@example.com", :password => "password"}
-      expect(User).to receive(:find_by).and_return(User.new)
-    end
 
     context "invalid signin" do
       it "should redirect the new page" do
+        @attr = {:email => "email@example.com", :password => "password"}
+        expect(User).to receive(:find_by).and_return(User.new)
         expect_any_instance_of(User).to receive(:authenticate).and_return(false)
         post :create, :session => @attr
-        debugger
         expect(response).to redirect_to('/signin')
       end
     end
 
     context "valid signin" do
-      it "should redirect to users page" do
-        expect_any_instance_of(User).to receive(:authenticate).and_return(true)
-        post :create, :session => @attr
+
+      before(:each) do
+        @user = User.find_by(:email => 'example@gmail.com') || FactoryGirl.create(:user)
+        @attr = {:email => @user.email,:password => "password"}
+        expect_any_instance_of(User).to receive(:authenticate).with(@attr[:password]).and_return(true)
       end
+
+      it "should sign the user in" do
+        post :create, :session => @attr
+        expect(response).to have_http_status(:redirect)
+      end
+
+      it "should redirect to show user page" do
+        post :create, :session => @attr
+        expect(response).to redirect_to(user_path(@user))
+      end
+
     end
 
   end
