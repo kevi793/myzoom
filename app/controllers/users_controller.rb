@@ -13,6 +13,7 @@ class UsersController < ApplicationController
       if @user.save
         #Successful save
         flash[:success] = 'Welcome to MyZoom'
+        log_in @user
         redirect_to @user
       else
         render 'new'
