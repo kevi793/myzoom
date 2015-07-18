@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+
+
   def show
     @user = User.find_by_id(params[:id])
   end
@@ -11,8 +13,8 @@ class UsersController < ApplicationController
       @user = User.new(user_params)
       @user.password = @user[:password_digest]
       if @user.save
-        #Successful save
         flash[:success] = 'Welcome to MyZoom'
+        sign_in @user
         redirect_to @user
       else
         render 'new'
@@ -20,7 +22,11 @@ class UsersController < ApplicationController
   end
 
   private
+
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password_digest)
   end
+
+
+
 end

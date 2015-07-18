@@ -1,1 +1,10 @@
-<h1>Header</h1>
+<div id="header" class="round">
+  <%= link_to logo, root_path %>
+  <ul class="navigation round">
+    <% if signed_in? %>
+      <li><%= link_to "Sign Out", 'signout', :method => 'delete' %></li>
+    <% else %>
+      <li><%= link_to "Sign In", 'signin' %></li>
+    <% end %>
+  </ul>
+</div>

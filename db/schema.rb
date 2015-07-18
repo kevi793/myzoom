@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150716081719) do
+ActiveRecord::Schema.define(version: 20150718185828) do
 
   create_table "cities", force: :cascade do |t|
     t.string "name", limit: 25, null: false
@@ -38,6 +38,9 @@ ActiveRecord::Schema.define(version: 20150716081719) do
     t.string   "last_name",       limit: 25,  null: false
     t.string   "email",           limit: 100, null: false
     t.string   "password_digest", limit: 60
+    t.string   "remember_token",  limit: 255
   end
+
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
 end

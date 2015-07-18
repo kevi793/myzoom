@@ -18,4 +18,10 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
+  def remember_me!
+    self.remember_token = Digest::MD5.hexdigest("#{id}--#{Time.now.utc}")
+    self.save
+  end
+
+
 end
