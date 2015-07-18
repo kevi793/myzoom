@@ -43,6 +43,7 @@ RSpec.describe SessionsController, type: :controller do
       end
 
       it "should redirect to show user page" do
+        debugger
         post :create, :session => @attr
         expect(response).to redirect_to(user_path(@user))
       end
