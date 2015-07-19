@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150718185828) do
+ActiveRecord::Schema.define(version: 20150719082028) do
+
+  create_table "car_groups", force: :cascade do |t|
+    t.string   "name",              limit: 255
+    t.integer  "seats",             limit: 4
+    t.integer  "tariff",            limit: 4
+    t.integer  "minimum_billing",   limit: 4
+    t.string   "image_url",         limit: 255
+    t.integer  "excess_km_charges", limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  create_table "cars", force: :cascade do |t|
+    t.integer  "car_group_id", limit: 4
+    t.integer  "location_id",  limit: 4
+    t.integer  "car_status",   limit: 4
+    t.string   "color",        limit: 255
+    t.string   "image_url",    limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "cars", ["car_group_id"], name: "index_cars_on_car_group_id", using: :btree
 
   create_table "cities", force: :cascade do |t|
     t.string "name", limit: 25, null: false

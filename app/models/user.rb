@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  attr_accessor :first_name
+  attr_accessor :last_name
+  attr_accessor :remember_token
   validates :first_name,
             :presence => {:message => " cannot be blank"},
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'}
