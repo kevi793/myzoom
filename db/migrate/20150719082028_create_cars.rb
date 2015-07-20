@@ -3,7 +3,8 @@ class CreateCars < ActiveRecord::Migration
     create_table :cars do |t|
       t.references :car_group, :index => true
       t.references :location
-      t.column :car_status, "ENUM('live', 'banned')"
+      t.string :name
+      t.column :car_status, "ENUM('live', 'banned')", :default => 'live'
       t.string :color
       t.string :image_url
       t.timestamps null: false

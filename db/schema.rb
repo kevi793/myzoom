@@ -18,11 +18,11 @@ ActiveRecord::Schema.define(version: 20150720071356) do
     t.integer  "car_id",         limit: 4
     t.integer  "car_group_id",   limit: 4
     t.integer  "location_id",    limit: 4
-    t.integer  "start_time_id",  limit: 4
-    t.integer  "end_time_id",    limit: 4
-    t.string   "booking_status", limit: 9
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string   "booking_status", limit: 9, default: "live"
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "bookings", ["user_id", "car_group_id", "location_id"], name: "index_bookings_on_user_id_and_car_group_id_and_location_id", using: :btree
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 20150720071356) do
     t.integer  "car_id",       limit: 4
     t.integer  "location_id",  limit: 4
     t.integer  "car_group_id", limit: 4
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
@@ -61,11 +63,12 @@ ActiveRecord::Schema.define(version: 20150720071356) do
   create_table "cars", force: :cascade do |t|
     t.integer  "car_group_id", limit: 4
     t.integer  "location_id",  limit: 4
-    t.string   "car_status",   limit: 6
+    t.string   "name",         limit: 255
+    t.string   "car_status",   limit: 6,   default: "live"
     t.string   "color",        limit: 255
     t.string   "image_url",    limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "cars", ["car_group_id"], name: "index_cars_on_car_group_id", using: :btree
@@ -79,21 +82,23 @@ ActiveRecord::Schema.define(version: 20150720071356) do
   create_table "inventories", force: :cascade do |t|
     t.integer  "car_group_id",   limit: 4
     t.integer  "location_id",    limit: 4
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.integer  "number_of_cars", limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.integer  "number_of_cars", limit: 4
   end
 
   add_index "inventories", ["car_group_id", "location_id"], name: "index_inventories_on_car_group_id_and_location_id", using: :btree
 
   create_table "locations", force: :cascade do |t|
     t.integer "city_id",     limit: 4
-    t.string  "name",        limit: 25,  null: false
-    t.string  "address",     limit: 100, null: false
-    t.float   "latitude",    limit: 24,  null: false
-    t.float   "longitude",   limit: 24,  null: false
-    t.string  "map_link",    limit: 255, null: false
-    t.string  "description", limit: 100, null: false
+    t.string  "name",        limit: 25
+    t.string  "address",     limit: 100
+    t.float   "latitude",    limit: 24
+    t.float   "longitude",   limit: 24
+    t.string  "map_link",    limit: 255
+    t.string  "description", limit: 100
   end
 
   add_index "locations", ["city_id", "name"], name: "index_locations_on_city_id_and_name", using: :btree

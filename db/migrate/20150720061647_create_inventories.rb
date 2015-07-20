@@ -3,8 +3,8 @@ class CreateInventories < ActiveRecord::Migration
     create_table :inventories do |t|
       t.references :car_group
       t.references :location
-      t.timestamps :start_time
-      t.timestamps :end_time
+      t.datetime :start_time
+      t.datetime :end_time
       t.integer :number_of_cars
       t.timestamps null: false
     end

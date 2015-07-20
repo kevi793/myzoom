@@ -4,8 +4,8 @@ class CreateCarmovements < ActiveRecord::Migration
       t.references :car
       t.references :location
       t.references :car_group
-      t.timestamps :start_time
-      t.timestamps :end_time
+      t.datetime :start_time
+      t.datetime :end_time
       t.timestamps null: false
     end
     add_index :carmovements, [:car_id, :location_id, :car_group_id]
