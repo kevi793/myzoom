@@ -2,7 +2,7 @@
 
   <ul class="navigation round">
     <% if signed_in? %>
-      <li><%= link_to "Sign Out", :controller => 'sessions', :action => 'destroy' %></li>
+      <li><%= link_to "Sign Out", :controller => 'sessions', :action => 'signout' %></li>
     <% else %>
       <li><%= link_to "Sign In", :controller => 'sessions', :action => 'new'  %></li>
     <% end %>
