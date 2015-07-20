@@ -7,6 +7,7 @@ class CreateBookings < ActiveRecord::Migration
       t.references :location
       t.references :start_time
       t.references :end_time
+      t.column :booking_status, "ENUM('live', 'completed', 'cancelled')"
       t.timestamps null: false
     end
     add_index :bookings, [:user_id, :car_group_id, :location_id]
