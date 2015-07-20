@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720065915) do
+ActiveRecord::Schema.define(version: 20150720071356) do
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer  "user_id",       limit: 4
+    t.integer  "car_id",        limit: 4
+    t.integer  "car_group_id",  limit: 4
+    t.integer  "location_id",   limit: 4
+    t.integer  "start_time_id", limit: 4
+    t.integer  "end_time_id",   limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "bookings", ["user_id", "car_group_id", "location_id"], name: "index_bookings_on_user_id_and_car_group_id_and_location_id", using: :btree
 
   create_table "car_groups", force: :cascade do |t|
     t.string   "name",              limit: 255

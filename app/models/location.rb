@@ -4,7 +4,8 @@ class Location < ActiveRecord::Base
   has_many :carmovements
   has_many :carblocks
   has_many :inventories
-
+  has_many :bookings
+  
   validates :name,
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'},
             :format => {with: /\A[a-zA-Z]+\z/, message: "only allows letters"},

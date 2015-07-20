@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  has_many :bookings
+
   validates :first_name,
             :presence => {:message => " cannot be blank"},
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'}
