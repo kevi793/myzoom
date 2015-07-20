@@ -1,6 +1,8 @@
 class Location < ActiveRecord::Base
   belongs_to :city
   has_many :cars
+  has_many :carmovements
+  has_many :inventories
 
   validates :name,
             :length => {in: 2..25, :message => 'Must be between 2 to 25 characters'},

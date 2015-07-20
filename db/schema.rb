@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720061647) do
+ActiveRecord::Schema.define(version: 20150720063214) do
 
   create_table "car_groups", force: :cascade do |t|
     t.string   "name",              limit: 255
@@ -22,6 +22,14 @@ ActiveRecord::Schema.define(version: 20150720061647) do
     t.integer  "excess_km_charges", limit: 4
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+  end
+
+  create_table "carmovements", force: :cascade do |t|
+    t.integer  "car_id",       limit: 4
+    t.integer  "location_id",  limit: 4
+    t.integer  "car_group_id", limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "cars", force: :cascade do |t|
