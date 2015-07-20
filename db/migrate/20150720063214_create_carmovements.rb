@@ -8,6 +8,7 @@ class CreateCarmovements < ActiveRecord::Migration
       t.timestamps :end_time
       t.timestamps null: false
     end
+    add_index :carmovements, [:car_id, :location_id, :car_group_id]
   end
 
   def down

@@ -2,6 +2,7 @@ class Location < ActiveRecord::Base
   belongs_to :city
   has_many :cars
   has_many :carmovements
+  has_many :carblocks
   has_many :inventories
 
   validates :name,

@@ -8,6 +8,7 @@ class CreateInventories < ActiveRecord::Migration
       t.integer :number_of_cars
       t.timestamps null: false
     end
+    add_index :inventories, [:car_group_id, :location_id]
   end
 
   def down
