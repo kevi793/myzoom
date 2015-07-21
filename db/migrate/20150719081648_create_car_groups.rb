@@ -12,7 +12,7 @@ class CreateCarGroups < ActiveRecord::Migration
   end
 
   def down
-    drop_table :car_groups
+    drop_table :car_groups      
   end
 
 end
