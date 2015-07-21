@@ -7,6 +7,10 @@ class Inventory < ActiveRecord::Base
      carmovements.each do |e|
       start_time = e.start_time
       end_time = e.end_time
+      start_time = start_time - start_time.sec
+      start_time = start_time - start_time.min*60
+      end_time = end_time - end_time.sec
+      end_time = end_time - end_time.min*60
       car = Car.find(e.car_id)
       car_group_id = car.car_group_id
       while start_time < end_time
@@ -23,5 +27,24 @@ class Inventory < ActiveRecord::Base
     end
   end
 
+  def self.checkCarAvailability(start_time, end_time)
+    inventories = Inventory.where("start_time >= ? and end_time <= ?",start_time, end_time)
+    inventories = inventories.group(:location_id, :car_group_id).minimum(:number_of_cars)
+    inventories.each do |inventory|
+      if inventory[1] > 0
+        puts "Location at #{inventory[0][0]} , car_group #{inventory[0][1]} has cars #{inventory[1]}"
+      end
+    end
+  end
+
+  def self.bookCar(start_time, end_time, car_group_id, location_id)
+    ActiveRecord::Base.connection.execute("LOCK TABLES inventories WRITE")
+    inventories = Inventory.where("start_time >= ? and end_time <= ? and car_group_id = ? and location_id = ?",
+    start_time, end_time, car_group_id, location_id)
+    inventories.each do |inventory|
+      inventory.decrement!(:number_of_cars)
+    end
+    ActiveRecord::Base.connection.execute("UNLOCK TABLES")
+  end
 
 end
