@@ -69,7 +69,7 @@ class Booking < ActiveRecord::Base
 
 
   def payment_successful?
-    payment_status = "" #some api call
+    payment_status = true #some api call
     if payment_status == true
       true
     else
@@ -79,7 +79,7 @@ class Booking < ActiveRecord::Base
   end
 
   def set_booking_status_changes
-    self.bookings << BookingStatusTimeStamp.create(
+    self.booking_status_time_stamps << BookingStatusTimeStamp.create(
     booking_id: self.id,
     booking_status_from_state: status_id_for(aasm.from_state),
     booking_status_to_state: status_id_for(aasm.to_state),
