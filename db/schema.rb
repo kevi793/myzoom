@@ -14,9 +14,11 @@
 ActiveRecord::Schema.define(version: 20150722052856) do
 
   create_table "booking_status_time_stamps", force: :cascade do |t|
-    t.integer  "booking_id",     limit: 4
-    t.integer  "booking_status", limit: 4
-    t.datetime "created_at",               null: false
+    t.integer  "booking_id",                limit: 4
+    t.integer  "booking_status_from_state", limit: 4
+    t.integer  "booking_status_to_state",   limit: 4
+    t.integer  "user_id",                   limit: 4
+    t.datetime "created_at"
   end
 
   add_index "booking_status_time_stamps", ["booking_id"], name: "index_booking_status_time_stamps_on_booking_id", using: :btree
