@@ -32,6 +32,7 @@ class Booking < ActiveRecord::Base
         after do
           set_booking_status_changes
           block_inventory
+          BookingWorker.perform_in(10.minutes, self.id, "call_successful_payment_after_10_minutes")
         end
       end
 
