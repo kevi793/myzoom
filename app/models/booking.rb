@@ -20,47 +20,47 @@ class Booking < ActiveRecord::Base
   aasm :column => :booking_status, :enum => true do
 
       state :initiated, initial: true
-      state :awaiting_payment#, :after => :set_booking_status_timestamp
-      state :paid#, :after => :set_booking_status_timestamp
-      state :allocated#, :after => :set_booking_status_timestamp
-      state :checkout#, :after => :set_booking_status_timestamp
-      state :completed#, :after => :set_booking_status_timestamp
-      state :cancelled#, :after => :set_booking_status_timestamp
+      state :awaiting_payment
+      state :paid
+      state :allocated
+      state :checkout
+      state :completed
+      state :cancelled
 
       event :start_payment do
-        transitions :from => :initiated , :to => :awaiting_payment, :after => :set_booking_status_timestamp
+        transitions :from => :initiated , :to => :awaiting_payment, :after => :set_booking_status_changes
       end
 
       event :successful_payment do
-        transitions :from => :awaiting_payment , :to => :paid, :after => :set_booking_status_timestamp
+        transitions :from => :awaiting_payment , :to => :paid, :after => :set_booking_status_changes
       end
 
       event :car_allocation do
-        transitions :from => :paid, :to => :allocated, :after => :set_booking_status_timestamp
+        transitions :from => :paid, :to => :allocated, :after => :set_booking_status_changes
       end
 
       event :checkout do
-        transitions :from => :allocated, :to => :checkout, :after => :set_booking_status_timestamp
+        transitions :from => :allocated, :to => :checkout, :after => :set_booking_status_changes
       end
 
       event :completed do
-        transitions :from => :checkout, :to => :completed, :after => :set_booking_status_timestamp
+        transitions :from => :checkout, :to => :completed, :after => :set_booking_status_changes
       end
 
       event :cancellation_from_initiated do
-        transitions :from => :initiated, :to => :cancelled, :after => :set_booking_status_timestamp
+        transitions :from => :initiated, :to => :cancelled, :after => :set_booking_status_changes
       end
 
       event :cancellation_from_paid do
-        transitions :from => :paid, :to => :cancelled, :after => :set_booking_status_timestamp
+        transitions :from => :paid, :to => :cancelled, :after => :set_booking_status_changes
       end
 
       event :cancellation_from_allocated do
-        transitions :from => :allocated, :to => :cancelled, :after => :set_booking_status_timestamp
+        transitions :from => :allocated, :to => :cancelled, :after => :set_booking_status_changes
       end
 
       event :cancellation_from_checkout do
-        transitions :from => :checkout, :to => :cancelled, :after => :set_booking_status_timestamp
+        transitions :from => :checkout, :to => :cancelled, :after => :set_booking_status_changes
       end
 
   end
@@ -70,7 +70,7 @@ class Booking < ActiveRecord::Base
     true
   end
 
-  def set_booking_status_timestamp
+  def set_booking_status_changes
     booking_status_time_stamp = BookingStatusTimeStamp.create()
     booking_status_time_stamp.booking_id = self.id
     booking_status_time_stamp.booking_status_from_state = Booking.booking_statuses[aasm.from_state]
