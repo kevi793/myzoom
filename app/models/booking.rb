@@ -28,11 +28,15 @@ class Booking < ActiveRecord::Base
       state :cancelled
 
       event :start_payment do
-        transitions :from => :initiated , :to => :awaiting_payment, :after => :set_booking_status_changes
+        transitions :from => :initiated , :to => :awaiting_payment
+        after do
+          set_booking_status_changes
+          Inventory.block_inventory(self.start_time, self.end_time, self.car_group_id, self.location_id)
+        end
       end
 
       event :successful_payment do
-        transitions :from => :awaiting_payment , :to => :paid, :after => :set_booking_status_changes
+        transitions :from => :awaiting_payment , :to => :paid, :after => :set_booking_status_changes, :guard => :payment_successful?
       end
 
       event :car_allocation do
@@ -47,27 +51,31 @@ class Booking < ActiveRecord::Base
         transitions :from => :checkout, :to => :completed, :after => :set_booking_status_changes
       end
 
-      event :cancellation_from_initiated do
-        transitions :from => :initiated, :to => :cancelled, :after => :set_booking_status_changes
-      end
-
-      event :cancellation_from_paid do
-        transitions :from => :paid, :to => :cancelled, :after => :set_booking_status_changes
-      end
-
-      event :cancellation_from_allocated do
-        transitions :from => :allocated, :to => :cancelled, :after => :set_booking_status_changes
-      end
-
-      event :cancellation_from_checkout do
-        transitions :from => :checkout, :to => :cancelled, :after => :set_booking_status_changes
+      event :cancellation do
+        after do
+          set_booking_status_changes
+          if Booking.booking_statuses[aasm.from_state] != 1
+            Booking.release_inventory(self.start_time, self.end_time, self.car_group_id, self.location_id)
+          end
+        end
+        transitions :from => :initiated, :to => :cancelled
+        transitions :from => :awaiting_payment, :to => :cancelled
+        transitions :from => :paid, :to => :cancelled
+        transitions :from => :allocated, :to => :cancelled
+        transitions :from => :checkout, :to => :cancelled
       end
 
   end
 
 
   def payment_successful?
-    true
+    payment_status = "" #some api call
+    if payment_status
+      true
+    else
+      self.cancellation
+      false
+    end
   end
 
   def set_booking_status_changes
@@ -78,5 +86,8 @@ class Booking < ActiveRecord::Base
     booking_status_time_stamp.created_at = DateTime.now
     booking_status_time_stamp.save
   end
+
+
+
 
 end
