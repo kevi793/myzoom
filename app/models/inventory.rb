@@ -51,7 +51,7 @@ class Inventory < ActiveRecord::Base
     end
   end
 
-  def inventories_of_cargroup_at_location_between_start_end_time(start_time, end_time, car_group_id, location_id)
+  def self.inventories_of_cargroup_at_location_between_start_end_time(start_time, end_time, car_group_id, location_id)
     inventories = Inventory.where("start_time >= ? and end_time <= ? and car_group_id = ? and location_id = ?",
     start_time, end_time, car_group_id, location_id)
   end
