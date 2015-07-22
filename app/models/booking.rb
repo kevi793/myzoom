@@ -91,11 +91,11 @@ class Booking < ActiveRecord::Base
   end
 
   def block_inventory
-    Inventory.block_inventory(self)
+    Inventory.block_inventory(self.start_time, self.end_time, self.car_group_id, self.location_id)
   end
 
   def release_inventory
-    Inventory.release_inventory(self)
+    Inventory.release_inventory(self.start_time, self.end_time, self.car_group_id, self.location_id)
   end
 
 

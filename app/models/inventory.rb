@@ -37,23 +37,23 @@ class Inventory < ActiveRecord::Base
     end
   end
 
-  def self.block_inventory(booking)
-    inventories = inventories_of_cargroup_at_location_between_start_end_time(booking)
+  def self.block_inventory(start_time, end_time, car_group_id, location_id)
+    inventories = inventories_of_cargroup_at_location_between_start_end_time(start_time, end_time, car_group_id, location_id)
     inventories.each do |inventory|
       inventory.decrement!(:number_of_cars)
     end
   end
 
-  def self.release_inventory(booking)
-    inventories = inventories_of_cargroup_at_location_between_start_end_time(booking)
+  def self.release_inventory(start_time, end_time, car_group_id, location_id)
+    inventories = inventories_of_cargroup_at_location_between_start_end_time(start_time, end_time, car_group_id, location_id)
     inventories.each do |inventory|
       inventory.increment!(:number_of_cars)
     end
   end
 
-  def inventories_of_cargroup_at_location_between_start_end_time(booking)
+  def inventories_of_cargroup_at_location_between_start_end_time(start_time, end_time, car_group_id, location_id)
     inventories = Inventory.where("start_time >= ? and end_time <= ? and car_group_id = ? and location_id = ?",
-    booking.start_time, booking.end_time, booking.car_group_id, booking.location_id)
+    start_time, end_time, car_group_id, location_id)
   end
 
 end
