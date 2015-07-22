@@ -31,7 +31,7 @@ class Booking < ActiveRecord::Base
         transitions :from => :initiated , :to => :awaiting_payment
         after do
           set_booking_status_changes
-          Inventory.block_inventory(self.start_time, self.end_time, self.car_group_id, self.location_id)
+          block_inventory
         end
       end
 
@@ -55,7 +55,7 @@ class Booking < ActiveRecord::Base
         after do
           set_booking_status_changes
           if Booking.booking_statuses[aasm.from_state] != 1
-            Booking.release_inventory(self.start_time, self.end_time, self.car_group_id, self.location_id)
+            release_inventory
           end
         end
         transitions :from => :initiated, :to => :cancelled
@@ -70,7 +70,7 @@ class Booking < ActiveRecord::Base
 
   def payment_successful?
     payment_status = "" #some api call
-    if payment_status
+    if payment_status == true
       true
     else
       self.cancellation
@@ -79,15 +79,24 @@ class Booking < ActiveRecord::Base
   end
 
   def set_booking_status_changes
-    booking_status_time_stamp = BookingStatusTimeStamp.create()
-    booking_status_time_stamp.booking_id = self.id
-    booking_status_time_stamp.booking_status_from_state = Booking.booking_statuses[aasm.from_state]
-    booking_status_time_stamp.booking_status_to_state = Booking.booking_statuses[aasm.to_state]
-    booking_status_time_stamp.created_at = DateTime.now
-    booking_status_time_stamp.save
+    self.bookings << BookingStatusTimeStamp.create(
+    booking_id: self.id,
+    booking_status_from_state: status_id_for(aasm.from_state),
+    booking_status_to_state: status_id_for(aasm.to_state),
+    created_at: DateTime.now)
   end
 
+  def status_id_for state
+    Booking.booking_statuses[state]
+  end
 
+  def block_inventory
+    Inventory.block_inventory(self)
+  end
+
+  def release_inventory
+    Inventory.release_inventory(self)
+  end
 
 
 end
