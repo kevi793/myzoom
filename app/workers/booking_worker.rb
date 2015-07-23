@@ -19,7 +19,7 @@ class BookingWorker
 
   def book_car(booking_id)
     booking = Booking.find_by_id(booking_id)
-    available_car_ids = Carmovement.car_movements(booking.car_group_id, booking.location_id, booking.start_time, booking.end_time).pluck(:car_id)
+    available_car_ids = Carmovement.get_cars(booking.car_group_id, booking.location_id, booking.start_time, booking.end_time).pluck(:car_id)
     available_car_ids -= Booking.cars_in_use(booking.car_group_id, booking.location_id, DateTime.now()).pluck(:car_id)
     available_car_ids -= Carblock.cars_blocked(booking.car_group_id, booking.start_time, booking.end_time)
     booking.car_id = available_car_ids.first
