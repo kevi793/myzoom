@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20150723101641) do
     t.integer  "location_id",    limit: 4
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer  "booking_status", limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.integer  "booking_status", limit: 4
   end
 
   add_index "bookings", ["user_id", "car_group_id", "location_id"], name: "index_bookings_on_user_id_and_car_group_id_and_location_id", using: :btree

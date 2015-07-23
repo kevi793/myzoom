@@ -32,7 +32,7 @@ class Booking < ActiveRecord::Base
         after do
           set_booking_status_changes
           block_inventory
-          BookingWorker.perform_in(CONFIG["booking"]["PAYMENT_WAIT_TIME"].minutes,
+          BookingWorker.perform_at(CONFIG["booking"]["PAYMENT_WAIT_TIME"].minutes,
            self.id, "call_successful_payment_after_10_minutes")
         end
       end
@@ -41,17 +41,19 @@ class Booking < ActiveRecord::Base
         transitions :from => :awaiting_payment , :to => :paid, :guard => :payment_successful?
         after do
           set_booking_status_changes
-          BookingWorker.perform_in(CONFIG["booking"]["PAYMENT_WAIT_TIME"].minutes,
+          time_after_to_book_car = [0,
+          self.start_time - DateTime.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"]].max
+          BookingWorker.perform_at(time_after_to_book_car.minutes,
            self.id, "schedule_job_for_car_booking")
         end
       end
 
       event :car_allocation do
-        transitions :from => :paid, :to => :allocated, :after => :set_booking_status_changes, :guard => :car_allocation_successful?
+        transitions :from => :paid, :to => :allocated, :after => :set_booking_status_changes
       end
 
       event :checkout do
-        transitions :from => :allocated, :to => :checkout, :after => :set_booking_status_changes
+        transitions :from => :allocated, :to => :checkout, :after => :set_booking_status_changes, :guard => :car_allocation_successful?
       end
 
       event :completed do
@@ -80,17 +82,19 @@ class Booking < ActiveRecord::Base
     if payment_status == true
       true
     else
-      self.cancellation
+      self.cancellation!
       false
     end
   end
 
 
   def car_allocation_successful?
-    if self.car_id != null
+    if self.car_id != nil
       true
     else
-      self.cancellation
+      debugger
+      self.cancellation!
+      false
     end
   end
 
