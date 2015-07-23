@@ -1,1 +1,3 @@
-"PAYMENT_WAIT_TIME" : 10
+development:
+  booking:
+      PAYMENT_WAIT_TIME: 1
