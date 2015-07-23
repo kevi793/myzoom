@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150722052856) do
+ActiveRecord::Schema.define(version: 20150723101641) do
 
   create_table "booking_status_time_stamps", force: :cascade do |t|
     t.integer  "booking_id",                limit: 4
@@ -30,9 +30,9 @@ ActiveRecord::Schema.define(version: 20150722052856) do
     t.integer  "location_id",    limit: 4
     t.datetime "start_time"
     t.datetime "end_time"
+    t.integer  "booking_status", limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.integer  "booking_status", limit: 4
   end
 
   add_index "bookings", ["user_id", "car_group_id", "location_id"], name: "index_bookings_on_user_id_and_car_group_id_and_location_id", using: :btree
@@ -49,23 +49,25 @@ ActiveRecord::Schema.define(version: 20150722052856) do
   end
 
   create_table "carblocks", force: :cascade do |t|
-    t.integer  "car_id",      limit: 4
-    t.integer  "location_id", limit: 4
+    t.integer  "car_id",       limit: 4
+    t.integer  "location_id",  limit: 4
     t.datetime "start_time"
     t.datetime "end_time"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "car_group_id", limit: 4
   end
 
   add_index "carblocks", ["car_id", "location_id"], name: "index_carblocks_on_car_id_and_location_id", using: :btree
 
   create_table "carmovements", force: :cascade do |t|
-    t.integer  "car_id",      limit: 4
-    t.integer  "location_id", limit: 4
+    t.integer  "car_id",       limit: 4
+    t.integer  "location_id",  limit: 4
     t.datetime "start_time"
     t.datetime "end_time"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "car_group_id", limit: 4
   end
 
   add_index "carmovements", ["car_id", "location_id"], name: "index_carmovements_on_car_id_and_location_id", using: :btree

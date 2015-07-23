@@ -87,7 +87,11 @@ class Booking < ActiveRecord::Base
 
 
   def car_allocation_successful?
-    true
+    if self.car_id != null
+      true
+    else
+      self.cancellation
+    end
   end
 
   def set_booking_status_changes
@@ -110,5 +114,9 @@ class Booking < ActiveRecord::Base
     Inventory.release_inventory(self.start_time, self.end_time, self.car_group_id, self.location_id)
   end
 
+  scope :cars_in_use, lambda { |car_group_id, location_id, current_time|
+    where("car_group_id = ? and location_id = ? and start_time <= ? and end_time >= ? and booking_status != ?",
+    car_group_id, location_id, current_time, current_time, Booking.booking_statuses[:cancelled])
+  }
 
 end
