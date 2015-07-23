@@ -38,11 +38,16 @@ class Booking < ActiveRecord::Base
       end
 
       event :successful_payment do
-        transitions :from => :awaiting_payment , :to => :paid, :after => :set_booking_status_changes, :guard => :payment_successful?
+        transitions :from => :awaiting_payment , :to => :paid, :guard => :payment_successful?
+        after do
+          set_booking_status_changes
+          BookingWorker.perform_in(CONFIG["booking"]["PAYMENT_WAIT_TIME"].minutes,
+           self.id, "schedule_job_for_car_booking")
+        end
       end
 
       event :car_allocation do
-        transitions :from => :paid, :to => :allocated, :after => :set_booking_status_changes
+        transitions :from => :paid, :to => :allocated, :after => :set_booking_status_changes, :guard => :car_allocation_successful?
       end
 
       event :checkout do
@@ -78,6 +83,11 @@ class Booking < ActiveRecord::Base
       self.cancellation
       false
     end
+  end
+
+
+  def car_allocation_successful?
+    true
   end
 
   def set_booking_status_changes
