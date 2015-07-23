@@ -17,7 +17,7 @@ class Booking < ActiveRecord::Base
     cancelled: 7
   }
 
-  aasm :column => :booking_status, :enum => true do
+  aasm :column => :booking_status, :skip_validation_on_save => true, :enum => true do
 
       state :initiated, initial: true
       state :awaiting_payment
@@ -92,7 +92,6 @@ class Booking < ActiveRecord::Base
     if self.car_id != nil
       true
     else
-      debugger
       self.cancellation!
       false
     end
