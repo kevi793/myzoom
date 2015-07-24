@@ -5,7 +5,9 @@ class CreatePriceDetails < ActiveRecord::Migration
       t.integer :fare_per_hour
       t.integer :fare_per_day
       t.integer :fare_per_week
-      t.datetime :created_at
+      t.integer :extra_fare_per_day
+      t.integer :extra_fare_per_week
+      t.integer :extra_fare_per_hour
     end
   end
 

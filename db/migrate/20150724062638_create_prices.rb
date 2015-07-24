@@ -4,6 +4,7 @@ class CreatePrices < ActiveRecord::Migration
       t.references :car_group
       t.references :city
       t.integer :day_type
+      t.datetime :start_time
       t.datetime :created_at
     end
   end

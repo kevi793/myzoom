@@ -116,17 +116,20 @@ ActiveRecord::Schema.define(version: 20150724065441) do
   add_index "locations", ["city_id", "name"], name: "index_locations_on_city_id_and_name", using: :btree
 
   create_table "price_details", force: :cascade do |t|
-    t.integer  "price_id",      limit: 4
-    t.integer  "fare_per_hour", limit: 4
-    t.integer  "fare_per_day",  limit: 4
-    t.integer  "fare_per_week", limit: 4
-    t.datetime "created_at"
+    t.integer "price_id",            limit: 4
+    t.integer "fare_per_hour",       limit: 4
+    t.integer "fare_per_day",        limit: 4
+    t.integer "fare_per_week",       limit: 4
+    t.integer "extra_fare_per_day",  limit: 4
+    t.integer "extra_fare_per_week", limit: 4
+    t.integer "extra_fare_per_hour", limit: 4
   end
 
   create_table "prices", force: :cascade do |t|
     t.integer  "car_group_id", limit: 4
     t.integer  "city_id",      limit: 4
     t.integer  "day_type",     limit: 4
+    t.datetime "start_time"
     t.datetime "created_at"
   end
 
