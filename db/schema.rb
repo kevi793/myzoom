@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723101641) do
+ActiveRecord::Schema.define(version: 20150724065441) do
 
   create_table "booking_status_time_stamps", force: :cascade do |t|
     t.integer  "booking_id",                limit: 4
@@ -114,6 +114,21 @@ ActiveRecord::Schema.define(version: 20150723101641) do
   end
 
   add_index "locations", ["city_id", "name"], name: "index_locations_on_city_id_and_name", using: :btree
+
+  create_table "price_details", force: :cascade do |t|
+    t.integer  "price_id",      limit: 4
+    t.integer  "fare_per_hour", limit: 4
+    t.integer  "fare_per_day",  limit: 4
+    t.integer  "fare_per_week", limit: 4
+    t.datetime "created_at"
+  end
+
+  create_table "prices", force: :cascade do |t|
+    t.integer  "car_group_id", limit: 4
+    t.integer  "city_id",      limit: 4
+    t.integer  "day_type",     limit: 4
+    t.datetime "created_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                  null: false
