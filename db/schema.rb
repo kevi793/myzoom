@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150724065441) do
+ActiveRecord::Schema.define(version: 20150727064319) do
 
   create_table "booking_status_time_stamps", force: :cascade do |t|
     t.integer  "booking_id",                limit: 4
@@ -24,15 +24,28 @@ ActiveRecord::Schema.define(version: 20150724065441) do
   add_index "booking_status_time_stamps", ["booking_id"], name: "index_booking_status_time_stamps_on_booking_id", using: :btree
 
   create_table "bookings", force: :cascade do |t|
-    t.integer  "user_id",        limit: 4
-    t.integer  "car_id",         limit: 4
-    t.integer  "car_group_id",   limit: 4
-    t.integer  "location_id",    limit: 4
+    t.integer  "user_id",           limit: 4
+    t.integer  "car_id",            limit: 4
+    t.integer  "car_group_id",      limit: 4
+    t.integer  "location_id",       limit: 4
     t.datetime "start_time"
     t.datetime "end_time"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.integer  "booking_status", limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "booking_status",    limit: 4
+    t.datetime "actual_start_time"
+    t.datetime "actual_end_time"
+    t.integer  "start_km",          limit: 4
+    t.integer  "end_km",            limit: 4
+    t.integer  "excess_km",         limit: 4
+    t.boolean  "early"
+    t.boolean  "late"
+    t.integer  "fare_per_hour",     limit: 4
+    t.integer  "fare_per_day",      limit: 4
+    t.integer  "fare_per_week",     limit: 4
+    t.integer  "excess_fuel",       limit: 4
+    t.string   "promo",             limit: 255
+    t.integer  "offer_id",          limit: 4
   end
 
   add_index "bookings", ["user_id", "car_group_id", "location_id"], name: "index_bookings_on_user_id_and_car_group_id_and_location_id", using: :btree
