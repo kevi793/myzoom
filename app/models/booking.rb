@@ -15,7 +15,8 @@ class Booking < ActiveRecord::Base
     allocated: 4,
     checkout: 5,
     completed: 6,
-    cancelled: 7
+    cancelled: 7,
+    rescheduled: 8
   }
 
   aasm :column => :booking_status, :skip_validation_on_save => true, :enum => true do
@@ -25,6 +26,7 @@ class Booking < ActiveRecord::Base
       state :paid
       state :allocated
       state :checkout
+      state :rescheduled
       state :completed
       state :cancelled
 
@@ -34,7 +36,7 @@ class Booking < ActiveRecord::Base
           set_booking_status_changes
           block_inventory
           BookingWorker.perform_at(CONFIG["booking"]["PAYMENT_WAIT_TIME"].minutes,
-           self.id, "call_successful_payment_after_10_minutes")
+          self.id, "call_successful_payment_after_10_minutes")
         end
       end
 
@@ -45,7 +47,7 @@ class Booking < ActiveRecord::Base
           time_after_to_book_car = [0,
           self.start_time - DateTime.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"]].max
           BookingWorker.perform_at(time_after_to_book_car.minutes,
-           self.id, "schedule_job_for_car_booking")
+          self.id, "schedule_job_for_car_booking")
         end
       end
 
@@ -61,6 +63,20 @@ class Booking < ActiveRecord::Base
         transitions :from => :checkout, :to => :completed, :after => :set_booking_status_changes
       end
 
+      event :initiate_after_reschedule do
+        transitions :from => :rescheduled , :to => :initiated, :after => :set_booking_status_changes
+      end
+
+      event :rescheduled do
+        transitions :from => :awaiting_payment, :to => :rescheduled
+        transitions :from => :paid, :to => :rescheduled
+        transitions :from => :allocated, :to => :rescheduled
+        after do
+          set_booking_status_changes
+          initiate_after_reschedule
+        end
+      end
+
       event :cancellation do
         after do
           set_booking_status_changes
@@ -73,6 +89,7 @@ class Booking < ActiveRecord::Base
         transitions :from => :paid, :to => :cancelled
         transitions :from => :allocated, :to => :cancelled
         transitions :from => :checkout, :to => :cancelled
+        transitions :from => :rescheduled, :to => :cancelled
       end
 
   end
