@@ -4,6 +4,7 @@ class Booking < ActiveRecord::Base
   belongs_to :car_group
   belongs_to :location
   has_many :booking_status_time_stamps
+  has_many :booking_schedules
 
   include AASM
 
