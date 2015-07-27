@@ -6,7 +6,7 @@ class Booking < ActiveRecord::Base
   has_many :booking_status_time_stamps
   has_many :booking_schedules
 
-  after_create :set_pricing_version
+  after_initialize :set_pricing_version
 
   include AASM
   enum booking_status: {
@@ -140,8 +140,10 @@ class Booking < ActiveRecord::Base
   }
 
   def set_pricing_version
+    debugger
     #set pricing version in booking object
     #then use self.pricing_version.constantize.new for accessing pricing methods
+    @@pricing_version = self.pricing_version.constantize.new
   end
 
 
