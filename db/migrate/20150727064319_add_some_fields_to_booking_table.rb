@@ -13,11 +13,11 @@ class AddSomeFieldsToBookingTable < ActiveRecord::Migration
     add_column :bookings, :excess_fuel, :integer
     add_column :bookings, :promo, :string
     add_column :bookings, :offer_id, :integer
-    add_column :bookings, :pricing_version, :string
+    add_column :bookings, :pricing_version_id, :integer
   end
 
   def down
-    remove_column :bookings, :pricing_version
+    remove_column :bookings, :pricing_version_id
     remove_column :bookings, :offer_id
     remove_column :bookings, :promo
     remove_column :bookings, :excess_fuel
