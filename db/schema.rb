@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20150727095917) do
     t.integer  "excess_fuel",       limit: 4
     t.string   "promo",             limit: 255
     t.integer  "offer_id",          limit: 4
+    t.string   "pricing_version",   limit: 255
   end
 
   add_index "bookings", ["user_id", "car_group_id", "location_id"], name: "index_bookings_on_user_id_and_car_group_id_and_location_id", using: :btree

@@ -6,8 +6,9 @@ class Booking < ActiveRecord::Base
   has_many :booking_status_time_stamps
   has_many :booking_schedules
 
-  include AASM
+  after_create :set_pricing_version
 
+  include AASM
   enum booking_status: {
     initiated: 1,
     awaiting_payment: 2,
@@ -15,8 +16,7 @@ class Booking < ActiveRecord::Base
     allocated: 4,
     checkout: 5,
     completed: 6,
-    cancelled: 7,
-    rescheduled: 8
+    cancelled: 7
   }
 
   aasm :column => :booking_status, :skip_validation_on_save => true, :enum => true do
@@ -26,7 +26,6 @@ class Booking < ActiveRecord::Base
       state :paid
       state :allocated
       state :checkout
-      state :rescheduled
       state :completed
       state :cancelled
 
@@ -63,17 +62,16 @@ class Booking < ActiveRecord::Base
         transitions :from => :checkout, :to => :completed, :after => :set_booking_status_changes
       end
 
-      event :initiate_after_reschedule do
-        transitions :from => :rescheduled , :to => :initiated, :after => :set_booking_status_changes
-      end
-
       event :rescheduled do
-        transitions :from => :awaiting_payment, :to => :rescheduled
-        transitions :from => :paid, :to => :rescheduled
-        transitions :from => :allocated, :to => :rescheduled
+        transitions :from => :initiated, :to => :initiated
+        transitions :from => :awaiting_payment, :to => :initiated
+        transitions :from => :paid, :to => :initiated
+        transitions :from => :allocated, :to => :initiated
+
         after do
           set_booking_status_changes
-          initiate_after_reschedule
+          release_inventory
+          #some pricing call
         end
       end
 
@@ -83,6 +81,7 @@ class Booking < ActiveRecord::Base
           if Booking.booking_statuses[aasm.from_state] != 1
             release_inventory
           end
+          #some refunds
         end
         transitions :from => :initiated, :to => :cancelled
         transitions :from => :awaiting_payment, :to => :cancelled
@@ -139,5 +138,11 @@ class Booking < ActiveRecord::Base
     where("car_group_id = ? and location_id = ? and start_time <= ? and end_time >= ? and booking_status != ?",
     car_group_id, location_id, current_time, current_time, Booking.booking_statuses[:cancelled])
   }
+
+  def set_pricing_version
+    #set pricing version in booking object
+    #then use self.pricing_version.constantize.new for accessing pricing methods
+  end
+
 
 end
