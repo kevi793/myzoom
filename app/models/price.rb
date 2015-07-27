@@ -21,18 +21,19 @@ class Price < ActiveRecord::Base
 
   end
 
-  def type_of_day(date_time)
+  def self.type_of_day(date_time)
     debugger
-    if date_time.wday<5
-      Price.day_type[:weekday]
+    if date_time.wday<=5
+      Price.day_types[:weekday]
     else
-      Price.day_type[:weekend]
+      Price.day_types[:weekend]
+    end
   end
 
-  def getPricePlan(car_group_id, booking_time, start_time)
+  def self.getPricePlan(car_group_id, booking_time, start_time)
     debugger
     price_id = Price.where("car_group_id = ? and created_at <= ? and start_time <= ? and day_type = ?",
-    car_group_id, booking_time, start_time, type_of_day(start_time)).order(start_time: :asc).last.pluck(:id)
+    car_group_id, booking_time, start_time, Price.type_of_day(start_time)).order(start_time: :asc).last.pluck(:id)
     PriceDetail.find_by_price_id(price_id[0])
   end
 
