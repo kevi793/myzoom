@@ -147,7 +147,7 @@ class Booking < ActiveRecord::Base
 
   def set_booking_configs
     # if car was allocated, then unallocate the car
-    self.car_id = nil if !self.car_id != nil
+    unallocate_car_if_allocated
     #create a new record in booking_schedules for this ScheduledSet
     add_a_schedule_for_this_booking
   end
@@ -182,6 +182,10 @@ class Booking < ActiveRecord::Base
 
   def add_a_schedule_for_this_booking
     BookingSchedule.add(self.id, self.start_time, self.end_time)
+  end
+
+  def unallocate_car_if_allocated
+    self.car_id = nil if !self.car_id != nil
   end
 
 end
