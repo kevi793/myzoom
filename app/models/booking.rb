@@ -24,8 +24,8 @@ class Booking < ActiveRecord::Base
 
   aasm :column => :booking_status, :skip_validation_on_save => true, :enum => true do
 
-      state :initiated, initial: true#, :after_enter => :set_pricing
-      state :awaiting_payment
+      state :initiated, initial: true
+      state :awaiting_payment, :before_enter => :set_booking_configs
       state :paid
       state :allocated
       state :checkout
@@ -44,9 +44,7 @@ class Booking < ActiveRecord::Base
 
       event :successful_payment do
         transitions :from => :awaiting_payment , :to => :paid, :guard => :payment_successful?
-        after do |variable|
-
-        end
+        after do
           set_booking_status_changes
           time_after_to_book_car = [0,
           self.start_time - DateTime.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"].minutes].max
@@ -75,13 +73,21 @@ class Booking < ActiveRecord::Base
 
         after do
           set_booking_status_changes
-          release_inventory
+          if Booking.booking_statuses[aasm.from_state] != 1
+            release_inventory
+          end
           remove_scheduled_sidekiq_processes
           #some pricing call
         end
       end
 
       event :cancellation do
+        transitions :from => :initiated, :to => :cancelled
+        transitions :from => :awaiting_payment, :to => :cancelled
+        transitions :from => :paid, :to => :cancelled
+        transitions :from => :allocated, :to => :cancelled
+        transitions :from => :checkout, :to => :cancelled
+        transitions :from => :rescheduled, :to => :cancelled
         after do
           set_booking_status_changes
           if Booking.booking_statuses[aasm.from_state] != 1
@@ -89,12 +95,6 @@ class Booking < ActiveRecord::Base
           end
           #some refunds
         end
-        transitions :from => :initiated, :to => :cancelled
-        transitions :from => :awaiting_payment, :to => :cancelled
-        transitions :from => :paid, :to => :cancelled
-        transitions :from => :allocated, :to => :cancelled
-        transitions :from => :checkout, :to => :cancelled
-        transitions :from => :rescheduled, :to => :cancelled
       end
 
   end
@@ -144,6 +144,14 @@ class Booking < ActiveRecord::Base
     where("car_group_id = ? and location_id = ? and start_time <= ? and end_time >= ? and booking_status != ?",
     car_group_id, location_id, current_time, current_time, Booking.booking_statuses[:cancelled])
   }
+
+  def set_booking_configs
+    debugger
+    # if car was allocated, then unallocate the car
+    self.car_id = nil if !self.car_id != nil
+    
+  end
+
 
   def initialise
 
