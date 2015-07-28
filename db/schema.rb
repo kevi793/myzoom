@@ -46,11 +46,6 @@ ActiveRecord::Schema.define(version: 20150727125827) do
     t.integer  "start_km",           limit: 4
     t.integer  "end_km",             limit: 4
     t.integer  "excess_km",          limit: 4
-    t.boolean  "early"
-    t.boolean  "late"
-    t.integer  "fare_per_hour",      limit: 4
-    t.integer  "fare_per_day",       limit: 4
-    t.integer  "fare_per_week",      limit: 4
     t.integer  "excess_fuel",        limit: 4
     t.string   "promo",              limit: 255
     t.integer  "offer_id",           limit: 4

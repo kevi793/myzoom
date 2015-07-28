@@ -5,11 +5,6 @@ class AddSomeFieldsToBookingTable < ActiveRecord::Migration
     add_column :bookings, :start_km, :integer
     add_column :bookings, :end_km, :integer
     add_column :bookings, :excess_km, :integer
-    add_column :bookings, :early, :boolean
-    add_column :bookings, :late, :boolean
-    add_column :bookings, :fare_per_hour, :integer
-    add_column :bookings, :fare_per_day, :integer
-    add_column :bookings, :fare_per_week, :integer
     add_column :bookings, :excess_fuel, :integer
     add_column :bookings, :promo, :string
     add_column :bookings, :offer_id, :integer
@@ -21,11 +16,6 @@ class AddSomeFieldsToBookingTable < ActiveRecord::Migration
     remove_column :bookings, :offer_id
     remove_column :bookings, :promo
     remove_column :bookings, :excess_fuel
-    remove_column :bookings, :fare_per_week
-    remove_column :bookings, :fare_per_day
-    remove_column :bookings, :fare_per_hour
-    remove_column :bookings, :late
-    remove_column :bookings, :early
     remove_column :bookings, :excess_km
     remove_column :bookings, :end_km
     remove_column :bookings, :start_km

@@ -21,7 +21,7 @@ class Booking < ActiveRecord::Base
 
   aasm :column => :booking_status, :skip_validation_on_save => true, :enum => true do
 
-      state :initiated, initial: true
+      state :initiated, initial: true, :after_enter => :fun
       state :awaiting_payment
       state :paid
       state :allocated
@@ -140,11 +140,14 @@ class Booking < ActiveRecord::Base
   }
 
   def set_pricing_version
-    debugger
     #set pricing version in booking object
     #then use self.pricing_version.constantize.new for accessing pricing methods
-    @@pricing_version = self.pricing_version.constantize.new
+    #@@pricing_version = self.pricing_version.constantize.new
   end
 
+  def fun
+    debugger
+    puts "hello"
+  end
 
 end
