@@ -143,7 +143,7 @@ class Booking < ActiveRecord::Base
   }
 
   def initialise
-    debugger
+
     #set pricing version object
     #@@pricing_version = self.pricing_version.constantize.new
     #set booking_schedules
@@ -155,7 +155,7 @@ class Booking < ActiveRecord::Base
   end
 
   def constructor
-    debugger
+
     #get pricing version id
     #get price detail id
 
