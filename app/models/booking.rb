@@ -7,9 +7,7 @@ class Booking < ActiveRecord::Base
   has_many :booking_status_time_stamps
   has_many :booking_schedules
 
-  after_create :constructor
   after_initialize :initialise
-
 
   include AASM
   enum booking_status: {
@@ -152,28 +150,15 @@ class Booking < ActiveRecord::Base
     add_a_schedule_for_this_booking
     #get price plan for this ScheduledSet
     get_price_details
+    #set reschedule charges
+    self.save
   end
 
 
   def initialise
-
     #set pricing version object
-    #@@pricing_version = self.pricing_version.constantize.new
-    #set booking_schedules
-    #set start time end time to new start end time
-    #call reschedule charges
-    #remove old sidekiq if present
-    #cancel car if booked
-
+    #@@pricing_version = PricingVersion.find(self.pricing_version_id).name.constantize.new
   end
-
-  def constructor
-
-    #get pricing version id
-    #get price detail id
-
-  end
-
 
   def remove_scheduled_sidekiq_processes
     r = Sidekiq::ScheduledSet.new
