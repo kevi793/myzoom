@@ -7,7 +7,7 @@ class Booking < ActiveRecord::Base
   has_many :booking_schedules
   belongs_to :pricing_version
 
-  after_create :fun
+  after_create :constructor
   after_initialize :initialise
 
 
@@ -24,7 +24,7 @@ class Booking < ActiveRecord::Base
 
   aasm :column => :booking_status, :skip_validation_on_save => true, :enum => true do
 
-      state :initiated, initial: true, :after_enter => :set_pricing
+      state :initiated, initial: true#, :after_enter => :set_pricing
       state :awaiting_payment
       state :paid
       state :allocated
@@ -38,7 +38,7 @@ class Booking < ActiveRecord::Base
           set_booking_status_changes
           block_inventory
           BookingWorker.perform_at(CONFIG["booking"]["PAYMENT_WAIT_TIME"].minutes,
-          self.id, "call_successful_payment_after_10_minutes")
+          self.id, "call_successful_payment")
         end
       end
 
@@ -47,7 +47,7 @@ class Booking < ActiveRecord::Base
         after do
           set_booking_status_changes
           time_after_to_book_car = [0,
-          self.start_time - DateTime.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"]].max
+          self.start_time - Time.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"]].max
           BookingWorker.perform_at(time_after_to_book_car.minutes,
           self.id, "schedule_job_for_car_booking")
         end
@@ -144,20 +144,21 @@ class Booking < ActiveRecord::Base
 
   def initialise
     debugger
-  end
-
-  def fun
-    debugger
-  end
-
-  def set_pricing_version
-    #set pricing version in booking object
-    #then use self.pricing_version.constantize.new for accessing pricing methods
+    #set pricing version object
     #@@pricing_version = self.pricing_version.constantize.new
+    #set booking_schedules
+    #set start time end time to new start end time
+    #call reschedule charges
+    #remove old sidekiq if present
+    #cancel car if booked
+
   end
 
-  def set_pricing
-      # get price version, get fare values in booking object, create a entry in schedules,
+  def constructor
+    debugger
+    #get pricing version id
+    #get price detail id
+
   end
 
 end
