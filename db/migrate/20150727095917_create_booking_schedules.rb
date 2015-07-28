@@ -4,7 +4,7 @@ class CreateBookingSchedules < ActiveRecord::Migration
       t.references :booking
       t.datetime :start_time
       t.datetime :end_time
-      t.timestamps null: false
+      t.datetime :created_at
     end
   end
 

@@ -3,9 +3,9 @@ class Booking < ActiveRecord::Base
   belongs_to :car
   belongs_to :car_group
   belongs_to :location
+  belongs_to :pricing_version
   has_many :booking_status_time_stamps
   has_many :booking_schedules
-  belongs_to :pricing_version
 
   after_create :constructor
   after_initialize :initialise
@@ -150,6 +150,8 @@ class Booking < ActiveRecord::Base
     unallocate_car_if_allocated
     #create a new record in booking_schedules for this ScheduledSet
     add_a_schedule_for_this_booking
+    #get price plan for this ScheduledSet
+    get_price_details
   end
 
 
@@ -187,5 +189,13 @@ class Booking < ActiveRecord::Base
   def unallocate_car_if_allocated
     self.car_id = nil if !self.car_id != nil
   end
+
+  def get_price_details
+    city_id = Location.find(self.location_id).city_id
+    self.price_id = Price.get_id(self.car_group_id, city_id, self.created_at, self.start_time)
+    self.pricing_version_id = PricingVersion.get_id(self.created_at)
+  end
+
+
 
 end

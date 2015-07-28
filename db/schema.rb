@@ -17,8 +17,7 @@ ActiveRecord::Schema.define(version: 20150727125827) do
     t.integer  "booking_id", limit: 4
     t.datetime "start_time"
     t.datetime "end_time"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at"
   end
 
   create_table "booking_status_time_stamps", force: :cascade do |t|
@@ -49,6 +48,7 @@ ActiveRecord::Schema.define(version: 20150727125827) do
     t.integer  "excess_fuel",        limit: 4
     t.string   "promo",              limit: 255
     t.integer  "offer_id",           limit: 4
+    t.integer  "price_id",           limit: 4
     t.integer  "pricing_version_id", limit: 4
   end
 
@@ -143,10 +143,16 @@ ActiveRecord::Schema.define(version: 20150727125827) do
   end
 
   create_table "prices", force: :cascade do |t|
-    t.integer  "car_group_id", limit: 4
-    t.integer  "city_id",      limit: 4
+    t.integer  "car_group_id",        limit: 4
+    t.integer  "city_id",             limit: 4
     t.datetime "start_time"
     t.datetime "created_at"
+    t.integer  "fare_per_hour",       limit: 4
+    t.integer  "fare_per_day",        limit: 4
+    t.integer  "fare_per_week",       limit: 4
+    t.integer  "extra_fare_per_hour", limit: 4
+    t.integer  "extra_fare_per_day",  limit: 4
+    t.integer  "extra_fare_per_week", limit: 4
   end
 
   create_table "pricing_versions", force: :cascade do |t|

@@ -5,6 +5,12 @@ class CreatePrices < ActiveRecord::Migration
       t.references :city
       t.datetime :start_time
       t.datetime :created_at
+      t.integer :fare_per_hour
+      t.integer :fare_per_day
+      t.integer :fare_per_week
+      t.integer :extra_fare_per_hour
+      t.integer :extra_fare_per_day
+      t.integer :extra_fare_per_week
     end
   end
 
