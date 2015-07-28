@@ -146,10 +146,10 @@ class Booking < ActiveRecord::Base
   }
 
   def set_booking_configs
-    debugger
     # if car was allocated, then unallocate the car
     self.car_id = nil if !self.car_id != nil
-    
+    #create a new record in booking_schedules for this ScheduledSet
+    add_a_schedule_for_this_booking
   end
 
 
@@ -177,6 +177,11 @@ class Booking < ActiveRecord::Base
     r = Sidekiq::ScheduledSet.new
     jobs = r.select {|schedule_job| schedule_job.args[0] == self.id}
     jobs.each(&:delete)
+  end
+
+
+  def add_a_schedule_for_this_booking
+    BookingSchedule.add(self.id, self.start_time, self.end_time)
   end
 
 end
