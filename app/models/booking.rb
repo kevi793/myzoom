@@ -44,11 +44,13 @@ class Booking < ActiveRecord::Base
 
       event :successful_payment do
         transitions :from => :awaiting_payment , :to => :paid, :guard => :payment_successful?
-        after do
+        after do |variable|
+
+        end
           set_booking_status_changes
           time_after_to_book_car = [0,
-          self.start_time - Time.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"].minutes].max
-          BookingWorker.perform_at(time_after_to_book_car.minutes,
+          self.start_time - DateTime.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"].minutes].max
+          BookingWorker.perform_at(time_after_to_book_car,
           self.id, "schedule_job_for_car_booking")
         end
       end
@@ -74,6 +76,7 @@ class Booking < ActiveRecord::Base
         after do
           set_booking_status_changes
           release_inventory
+          remove_scheduled_sidekiq_processes
           #some pricing call
         end
       end
@@ -159,6 +162,13 @@ class Booking < ActiveRecord::Base
     #get pricing version id
     #get price detail id
 
+  end
+
+
+  def remove_scheduled_sidekiq_processes
+    r = Sidekiq::ScheduledSet.new
+    jobs = r.select {|schedule_job| schedule_job.args[0] == self.id}
+    jobs.each(&:delete)
   end
 
 end
