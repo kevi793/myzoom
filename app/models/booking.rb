@@ -47,7 +47,7 @@ class Booking < ActiveRecord::Base
         after do
           set_booking_status_changes
           time_after_to_book_car = [0,
-          self.start_time - Time.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"]].max
+          self.start_time - Time.now - CONFIG["booking"]["MINUTES_BEFORE_START_TIME_TO_BOOK_ACTUAL_CAR"].minutes].max
           BookingWorker.perform_at(time_after_to_book_car.minutes,
           self.id, "schedule_job_for_car_booking")
         end
