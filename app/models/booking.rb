@@ -5,8 +5,11 @@ class Booking < ActiveRecord::Base
   belongs_to :location
   has_many :booking_status_time_stamps
   has_many :booking_schedules
+  belongs_to :pricing_version
 
-  after_initialize :set_pricing_version
+  after_create :fun
+  after_initialize :initialise
+
 
   include AASM
   enum booking_status: {
@@ -21,7 +24,7 @@ class Booking < ActiveRecord::Base
 
   aasm :column => :booking_status, :skip_validation_on_save => true, :enum => true do
 
-      state :initiated, initial: true, :after_enter => :fun
+      state :initiated, initial: true, :after_enter => :set_pricing
       state :awaiting_payment
       state :paid
       state :allocated
@@ -139,15 +142,22 @@ class Booking < ActiveRecord::Base
     car_group_id, location_id, current_time, current_time, Booking.booking_statuses[:cancelled])
   }
 
+  def initialise
+    debugger
+  end
+
+  def fun
+    debugger
+  end
+
   def set_pricing_version
     #set pricing version in booking object
     #then use self.pricing_version.constantize.new for accessing pricing methods
     #@@pricing_version = self.pricing_version.constantize.new
   end
 
-  def fun
-    debugger
-    puts "hello"
+  def set_pricing
+      # get price version, get fare values in booking object, create a entry in schedules,
   end
 
 end

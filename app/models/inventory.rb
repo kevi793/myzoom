@@ -3,9 +3,9 @@ class Inventory < ActiveRecord::Base
   belongs_to :location
 
   def self.createInventory
-    carmovements = Carmovement.all
+    carmovements = Carmovement.get_current_or_future_movements(DateTime.now)
      carmovements.each do |e|
-      start_time = e.start_time
+      start_time = [e.start_time, Time.now].max
       end_time = e.end_time
       start_time = start_time - start_time.sec
       start_time = start_time - start_time.min*60
