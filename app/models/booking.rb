@@ -7,7 +7,6 @@ class Booking < ActiveRecord::Base
   has_many :booking_status_time_stamps
   has_many :booking_schedules
 
-  after_initialize :initialise
 
   include AASM
   enum booking_status: {
@@ -154,11 +153,7 @@ class Booking < ActiveRecord::Base
     self.save
   end
 
-
-  def initialise
-    #set pricing version object
-    #@@pricing_version = PricingVersion.find(self.pricing_version_id).name.constantize.new
-  end
+  #@@pricing_version = PricingVersion.find(self.pricing_version_id).name.constantize.new
 
   def remove_scheduled_sidekiq_processes
     r = Sidekiq::ScheduledSet.new
