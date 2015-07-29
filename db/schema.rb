@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150727125827) do
+ActiveRecord::Schema.define(version: 20150729041223) do
 
   create_table "booking_schedules", force: :cascade do |t|
     t.integer  "booking_id", limit: 4
@@ -169,6 +169,15 @@ ActiveRecord::Schema.define(version: 20150727125827) do
     t.datetime "end_time"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "upload_files", force: :cascade do |t|
+    t.integer "cargroup_id",            limit: 4
+    t.integer "hourly_fare",            limit: 4
+    t.integer "hourly_discounted_fare", limit: 4
+    t.integer "hourly_bod_fare",        limit: 4
+    t.integer "daily_discounted_fare",  limit: 4
+    t.integer "excess_km",              limit: 4
   end
 
   create_table "users", force: :cascade do |t|
